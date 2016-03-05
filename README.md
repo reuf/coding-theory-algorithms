@@ -4,14 +4,17 @@ Collection of NumPy scripts for Aarhus University's TI-INCO course.
 ## BinarySymmetricChannel.py
 Based on the the Binary Symmetric Channel lectures.
 
+## GaloisFields.py
+Based on the the Galois Field lecture (2016-18-02).
+
 ## LinearBlockCodes.py
 Based on the the Linear Block Codes lecture (2016-11-02) slides 30-76.
 
 ## CyclicCodes.py
 Based on the the Cyclic Codes lecture (2016-18-02).
 
-## GaloisFields.py
-Based on the the Galois Field lecture (2016-18-02).
+## BCHCode.py
+Based on the the BCH Codes lecture (2016-25-02).
 
 ## Usage
 ### playground.py
