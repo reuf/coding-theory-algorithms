@@ -12,7 +12,7 @@ disp('Simulate BSC transmission scenarios...');
 received_codes = zeros(0.5/resolution + 1, size(code, 1));
 for i = 0:(0.5/resolution)
     p = i * resolution;
-    received_code = bsc(code, p);
+    received_code = burst_channel(code, p, 0, 1, 0); % no bursts
     received_codes(i+1,:) = received_code';
 end
 
