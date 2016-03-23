@@ -1,14 +1,19 @@
 function [ tblen ] = tblen_from_trellis( trellis )
-%TBLEN_FROM_TRELLIS Summary of this function goes here
-%   Detailed explanation goes here
+%TBLEN_FROM_TRELLIS Returns truncation depth for code specified by trellis.
+%   Returns truncation depth for convolutional code specified by trellis 
+%   based on B. Moision's rule of thumb [1].
+%
+%   [1]  B. Moision. "A Truncation Depth Rule of Thumb for Convolutional 
+%        Codes." In Information Theory and Applications Workshop 
+%        (January 27 2008-February 1 2008, San Diego, California), 555-557. 
+%        New York: IEEE, 2008. 
 
-% http://se.mathworks.com/help/comm/ref/viterbidecoder.html
+n = log2(trellis.numOutputSymbols); % n encoder outputs
+k = log2(trellis.numInputSymbols);  % k encoder inputs
+K = log2(trellis.numStates);        % memory order
 
-k = log2(trellis.numInputSymbols);
-n = log2(trellis.numOutputSymbols);
-r = k / n;
-K = log2(trellis.numStates); %memory order (numStates works here..but overall correct?)
-tblen = round(2.5 * K / (1 - r)); % should we round up/down?
+r = k / n;                          % code rate
+
+tblen = round(2.5 * K / (1 - r));   % truncation depth rule of thumb [1]
 
 end
-
