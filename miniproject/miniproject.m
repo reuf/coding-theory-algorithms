@@ -5,13 +5,13 @@ trellis2 = poly2trellis(4, {'1 + x^2 + x^3', '1 + x + x^3', '1 + x + x^2 + x^3'}
 trellis3 = poly2trellis(3, {'1 + x^2', '1 + x + x^2', '1 + x + x^2', '1 + x + x^2'});
 
 message = randi([0 1],10^6,1);
-resolution = 0.01;
 
-[p, biterrors1] = bsc_benchmark(message, trellis1, resolution);
-[~, biterrors2] = bsc_benchmark(message, trellis2, resolution);
-[~, biterrors3] = bsc_benchmark(message, trellis3, resolution);
+p = 0:0.01:0.5;
+biterrors1 = bsc_benchmark(message, trellis1, p);
+biterrors2 = bsc_benchmark(message, trellis2, p);
+biterrors3 = bsc_benchmark(message, trellis3, p);
 
-biterror_channel = 0:resolution:0.5; % actual BSC bit error
+biterror_channel = p; % theoretical BSC bit error rate
 
 figure % opens new figure window
 plot(p, biterrors1, p, biterrors2, p, biterrors3, p, biterror_channel)
