@@ -1,30 +1,35 @@
 function [ biterrors ] = bsc_benchmark( message, trellis, probability )
-%BSC_BENCHMARK Summary of this function goes here
-%   Detailed explanation goes here
+%BSC_BENCHMARK Encoded transmission over BSC with multiple bit error
+%              probabilities and subsequent decoding. Returns bit error 
+%              rates of transmissions.
 
-disp('Encoding...');
+% Initialization ----------------------------------------------------------
+tblen = tblen_from_trellis(trellis);    % calc viterbi truncation depth.
+
+biterrors = zeros(size(probability));   % Init array which gets filled with
+                                        % measured bit error rates for all 
+                                        % probabilities.
+
+% Encoding ----------------------------------------------------------------                                       
+disp('> Encode message...');
 
 code = convenc(message, trellis); 
 
-disp('Simulate BSC transmission scenarios...');
-
-received_codes = zeros(size(code, 1), size(probability, 2)); % every column represents the code for a specific probability
+% Simulated transmission and decoding -------------------------------------
+disp('> Simulate transmission and decode...');
 i = 0;
 for p = probability
-    i = i + 1;
-    received_code = burst_channel(code, p, 0, 1, 0); % no bursts
-    received_codes(:,i) = received_code';
-end
-
-disp('Decoding...');
-
-tblen = tblen_from_trellis(trellis);
-biterrors = zeros(size(received_codes, 2), 1);
-i = 0;
-for received_code = received_codes
-    i = i + 1;
-    decoded_message = vitdec(received_code, trellis, tblen, 'trunc', 'hard');
-    [~, pcterrs] = biterr(message, decoded_message);
+    i = i + 1; % count iteration for array indexing
+    disp(['  > Scenario: p = ', num2str(p)]);
+    
+    % Simulate transmission
+    received = burst_channel(code, p, 0, 1, 0); % BSC with error 
+                                                % probability p; no bursts
+    % Decode received code                                                     
+    decoded_message = vitdec(received, trellis, tblen, 'trunc', 'hard');
+    
+    % Calc bit error rate and save in return array
+    [~, pcterrs] = biterr(message, decoded_message); 
     biterrors(i) = pcterrs;
 end
 
