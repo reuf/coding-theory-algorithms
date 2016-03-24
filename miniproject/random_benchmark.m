@@ -1,13 +1,13 @@
-function [ biterrors ] = bsc_benchmark( message, trellis, probability )
-%BSC_BENCHMARK Encoded transmission over BSC with multiple bit error
-%              probabilities and subsequent decoding. Returns bit error 
-%              rates of transmissions.
+function [ BER_ch, BER ] = random_benchmark( message, trellis, probabilities )
+%RANDOM_BENCHMARK Encoded transmission over BSC with multiple bit error
+%                 probabilities and subsequent decoding. Returns bit error 
+%                 rates of transmissions.
 
 % Initialization ----------------------------------------------------------
 tblen = tblen_from_trellis(trellis);    % calc viterbi truncation depth.
 
-biterrors = zeros(size(probability));   % Init array which gets filled with
-                                        % measured bit error rates for all 
+BER = zeros(size(probabilities));       % Init arrays which gets filled with
+BER_ch = zeros(size(probabilities));    % measured bit error rates for all 
                                         % probabilities.
 
 % Encoding ----------------------------------------------------------------                                       
@@ -18,9 +18,9 @@ code = convenc(message, trellis);
 % Simulated transmission and decoding -------------------------------------
 disp('> Simulate transmission and decode...');
 i = 0;
-for p = probability
+for p = probabilities
     i = i + 1; % count iteration for array indexing
-    disp(['  > Scenario: p = ', num2str(p)]);
+    %disp(['  > Scenario: p = ', num2str(p)]);
     
     % Simulate transmission
     received = burst_channel(code, p, 0, 1, 0); % BSC with error 
@@ -29,8 +29,10 @@ for p = probability
     decoded_message = vitdec(received, trellis, tblen, 'trunc', 'hard');
     
     % Calc bit error rate and save in return array
-    [~, pcterrs] = biterr(message, decoded_message); 
-    biterrors(i) = pcterrs;
+    [~, pcterrs] = biterr(message, decoded_message); % code
+    BER(i) = pcterrs;
+    [~, pcterrs] = biterr(code, received); % channel
+    BER_ch(i) = pcterrs;
 end
 
 end
