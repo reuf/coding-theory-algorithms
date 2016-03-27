@@ -26,13 +26,13 @@ disp('------------------------------------------------------------------');
 message = randi([0 1], message_len, 1); % generate random message 
 p = 0:0.01:0.5;                         % bit error probabilities 
                                  
-disp('Benchmark C_conv1 on BSC with multiple bit error probabilities:');                                 
+disp('Benchmark C_conv1 on BSC with multiple bit error probabilities...');                                 
 [BER_r, BER_m1] = random_benchmark(message, trellis_1, p);
 
-disp('Benchmark C_conv2 on BSC with multiple bit error probabilities:');                                 
+disp('Benchmark C_conv2 on BSC with multiple bit error probabilities...');                                 
 [~, BER_m2] = random_benchmark(message, trellis_2, p);
 
-disp('Benchmark C_conv3 on BSC with multiple bit error probabilities:');                                 
+disp('Benchmark C_conv3 on BSC with multiple bit error probabilities...');                                 
 [~, BER_m3] = random_benchmark(message, trellis_3, p);
 
 figure(1);
@@ -51,13 +51,13 @@ disp('------------------------------------------------------------------');
 message = randi([0 1], message_len, 1); % generate random message
 burst_len = 0:25;                       % burst length
 
-disp('Benchmark C_conv1 on channel with single burst error of fixed length:');                                 
+disp('Benchmark C_conv1 on channel with single burst error of fixed length...');                                 
 [BER_r1, BER_m1] = fixed_burst_benchmark(message, trellis_1, burst_len);
 
-disp('Benchmark C_conv2 on channel with single burst error of fixed length:');                                                                 
+disp('Benchmark C_conv2 on channel with single burst error of fixed length...');                                                                 
 [BER_r2, BER_m2] = fixed_burst_benchmark(message, trellis_2, burst_len);
 
-disp('Benchmark C_conv3 on channel with single burst error of fixed length:');                                                                 
+disp('Benchmark C_conv3 on channel with single burst error of fixed length...');                                                                 
 [BER_r3, BER_m3] = fixed_burst_benchmark(message, trellis_3, burst_len);
 
 figure(2);
@@ -76,19 +76,19 @@ ylabel('bit error rate [%]');
 
 disp('------------------------------------------------------------------');                        
 disp(' Benchmark codes with single burst error of different length on   ');
-disp(' otherwise error-free channel (burst length 0-1000)               ');
+disp(' otherwise error-free channel (burst length 0-500)                ');
 disp('------------------------------------------------------------------');                         
 
 message = randi([0 1], message_len, 1); % generate random message
-burst_len = 0:1000;                     % burst length
+burst_len = 0:500;                      % burst length
 
-disp('Benchmark C_conv1 on channel with single burst error of fixed length:');                                 
+disp('Benchmark C_conv1 on channel with single burst error of fixed length...');                                 
 [BER_r1, BER_m1] = fixed_burst_benchmark(message, trellis_1, burst_len);
 
-disp('Benchmark C_conv2 on channel with single burst error of fixed length:');                                                                 
+disp('Benchmark C_conv2 on channel with single burst error of fixed length...');                                                                 
 [BER_r2, BER_m2] = fixed_burst_benchmark(message, trellis_2, burst_len);
 
-disp('Benchmark C_conv3 on channel with single burst error of fixed length:');                                                                 
+disp('Benchmark C_conv3 on channel with single burst error of fixed length...');                                                                 
 [BER_r3, BER_m3] = fixed_burst_benchmark(message, trellis_3, burst_len);
 
 figure(3);
@@ -113,8 +113,13 @@ message = randi([0 1], message_len, 1);   % generate random message
 burst_start_p = 0:0.01:1;    % burst start probability (x-axis)
 burst_end_p = 0.2:0.2:0.8;   % burst end probability (different figures)
 
+disp('Benchmark C_conv1 on channel with multiple burst error probabilities...');
 [BER_r, BER_m1] = burst_benchmark(message, trellis_1, burst_start_p, burst_end_p);
+
+disp('Benchmark C_conv2 on channel with multiple burst error probabilities...');
 [~, BER_m2]     = burst_benchmark(message, trellis_2, burst_start_p, burst_end_p);
+
+disp('Benchmark C_conv3 on channel with multiple burst error probabilities...');
 [~, BER_m3]     = burst_benchmark(message, trellis_3, burst_start_p, burst_end_p);
 
 figure(4);
