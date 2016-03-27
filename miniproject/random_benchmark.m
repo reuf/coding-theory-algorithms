@@ -36,10 +36,8 @@ for p = probabilities
     decoded_message = vitdec(received, trellis, tblen, 'trunc', 'hard');
     
     % Calc bit error rates and save in return vectors
-    [~, pcterrs] = biterr(message, decoded_message);  % decoded message
-    BER_m(i) = pcterrs;
-    [~, pcterrs] = biterr(code, received);            % received codeword
-    BER_r(i) = pcterrs;
+    [~, BER_m(i)] = biterr(message, decoded_message);  % decoded message
+    [~, BER_r(i)] = biterr(code, received);            % received codeword
 end
 
 end

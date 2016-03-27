@@ -45,10 +45,8 @@ for burst_start_probability = burst_start_p
         decoded_message = vitdec(received, trellis, tblen, 'trunc', 'hard');
 
         % Calc bit error rates and save in return vectors
-        [~, pcterrs] = biterr(message, decoded_message);% decoded message
-        BER_m(i, j) = pcterrs;
-        [~, pcterrs] = biterr(code, received);          % received codeword
-        BER_r(i, j) = pcterrs;
+        [~, BER_m(i, j)] = biterr(message, decoded_message);% decoded msg
+        [~, BER_r(i, j)] = biterr(code, received);          % rx codeword
     end
 end
 

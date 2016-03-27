@@ -34,11 +34,9 @@ for l = burst_lengths
     % Decode received code                                                     
     decoded_message = vitdec(received, trellis, tblen, 'trunc', 'hard');
 
-    % Calc bit error rate and save in return array
-    [~, pcterrs] = biterr(message, decoded_message); % code
-    BER_m(i) = pcterrs;
-    [~, pcterrs] = biterr(code, received); % channel
-    BER_r(i) = pcterrs;
+    % Calc bit error rates and save in return vectors
+    [~, BER_m(i)] = biterr(message, decoded_message);  % decoded message
+    [~, BER_r(i)] = biterr(code, received);            % received codeword
 end
 
 end
