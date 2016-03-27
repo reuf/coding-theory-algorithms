@@ -1,5 +1,5 @@
-function [ y ] = burst_channel( x, p_rand_err, p_burst_err, p_rand_state, p_burst_state )
-%BURST_CHANNEL Simulate BSC with possibility of burst errors.
+function [ y ] = probability_channel( x, p_rand_err, p_burst_err, p_rand_state, p_burst_state )
+%PROBABILITY_CHANNEL Simulate BSC with possibility of burst errors.
 %   This function simulates the transmission of the bits x over a BSC. The
 %   BSC has two different states, which form a markov chain: random state
 %   and burst state. The probabilities of staying in the states are

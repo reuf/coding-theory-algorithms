@@ -24,8 +24,11 @@ for burst_start_probability = burst_start_probabilities
     %disp(['  > Scenario: burst start p = ', num2str(burst_start_probability)]);
     
     % Simulate transmission
-    received = burst_channel(code, 0, 1, ... % BSC without single random errors
-        1-burst_start_probability, 1-burst_end_probability); % but random burst errors
+    received = probability_channel(code, ... 
+                                   0, ... % no random bit errors 
+                                   1, ... % constant burst error
+                                   1 - burst_start_probability, ...
+                                   1 - burst_end_probability);
     
     % Decode received code                                                     
     decoded_message = vitdec(received, trellis, tblen, 'trunc', 'hard');
