@@ -45,38 +45,7 @@ ylabel('bit error rate [%]');
 
 disp('------------------------------------------------------------------');                        
 disp(' Benchmark codes with single burst error of different length on   ');
-disp(' otherwise error-free channel (burst length 0-25)                 ');
-disp('------------------------------------------------------------------');                        
-
-message = randi([0 1], message_len, 1); % generate random message
-burst_len = 0:25;                       % burst length
-
-disp('Benchmark C_conv1 on channel with single burst error of fixed length...');                                 
-[BER_r1, BER_m1] = fixed_burst_benchmark(message, trellis_1, burst_len);
-
-disp('Benchmark C_conv2 on channel with single burst error of fixed length...');                                                                 
-[BER_r2, BER_m2] = fixed_burst_benchmark(message, trellis_2, burst_len);
-
-disp('Benchmark C_conv3 on channel with single burst error of fixed length...');                                                                 
-[BER_r3, BER_m3] = fixed_burst_benchmark(message, trellis_3, burst_len);
-
-figure(2);
-plot(burst_len, BER_m1, ...
-     burst_len, BER_m2, ...
-     burst_len, BER_m3, ...
-     burst_len, BER_r1, '--',  ...
-     burst_len, BER_r2, '-.', ...
-     burst_len, BER_r3, ':');
-title('BSC with single burst error');
-legend('C_{conv1}', 'C_{conv2}', 'C_{conv3}',...
-       'channel 1', 'channel 2', 'channel 3',...
-       'Location', 'northwest');
-xlabel('burst length [bit]');
-ylabel('bit error rate [%]');
-
-disp('------------------------------------------------------------------');                        
-disp(' Benchmark codes with single burst error of different length on   ');
-disp(' otherwise error-free channel (burst length 0-500)                ');
+disp(' otherwise error-free channel                                     ');
 disp('------------------------------------------------------------------');                         
 
 message = randi([0 1], message_len, 1); % generate random message
@@ -90,6 +59,20 @@ disp('Benchmark C_conv2 on channel with single burst error of fixed length...');
 
 disp('Benchmark C_conv3 on channel with single burst error of fixed length...');                                                                 
 [BER_r3, BER_m3] = fixed_burst_benchmark(message, trellis_3, burst_len);
+
+figure(2);
+plot(burst_len(1:25), BER_m1(1:25), ...
+     burst_len(1:25), BER_m2(1:25), ...
+     burst_len(1:25), BER_m3(1:25), ...
+     burst_len(1:25), BER_r1(1:25), '--',  ...
+     burst_len(1:25), BER_r2(1:25), '-.', ...
+     burst_len(1:25), BER_r3(1:25), ':');
+title('BSC with single burst error');
+legend('C_{conv1}', 'C_{conv2}', 'C_{conv3}',...
+       'channel 1', 'channel 2', 'channel 3',...
+       'Location', 'northwest');
+xlabel('burst length [bit]');
+ylabel('bit error rate [%]');
 
 figure(3);
 plot(burst_len, BER_m1, ...
