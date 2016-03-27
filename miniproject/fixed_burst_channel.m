@@ -1,6 +1,6 @@
 function [y] = fixed_burst_channel(x, burst_length)
-%FIXED_BURST_CHANNEL Flip burst_length bits in the middle of the input
-%                    code.
+%FIXED_BURST_CHANNEL Flip burst_length bits in the middle of the
+%                    transmitted sequence x.
 
 y = x; % copy input bits; errors are introduced in loop
 
@@ -10,4 +10,6 @@ burst_start = round(burst_middle - burst_length / 2);
 burst_end = burst_start + burst_length;
 for i = burst_start:burst_end
     y(i) = 1 - y(i); %flip bit 
+end
+
 end

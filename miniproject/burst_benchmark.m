@@ -1,16 +1,20 @@
-function [ BER_ch, BER ] = burst_benchmark( message, trellis, burst_start_probabilities, burst_end_probability )
+function [ BER_r, BER_m ] = burst_benchmark( message, trellis, ...
+                                             burst_start_p, burst_end_p )
 %BURST_BENCHMARK Encoded transmission over BSC without single random errors 
-%                        but random burst errors and subsequent decoding. 
-%                        Returns bit error rates of transmissions.
+%                but random burst errors and subsequent decoding. 
+%                Returns the bit error rates of decoded messages under all  
+%                given channel bit error probabilities as well as the bit 
+%                error rates of the original received code sequences for 
+%                comparison. The return matrix has the size 
+%                length(burst_start_p) x length(burst_end_p).
 
 % Initialization ----------------------------------------------------------
-tblen = tblen_from_trellis(trellis);    % calc viterbi truncation depth.
-
-BER = zeros(size(burst_start_probabilities));    % Init arrays which gets 
-BER_ch = zeros(size(burst_start_probabilities)); % filled with measured bit  
-                                                 % error rates for all 
-                                                 % probabilities.
-
+tblen = tblen_from_trellis(trellis);    % calc Viterbi truncation depth
+                                            
+BER_m = zeros(size(burst_start_p, 2),...% Init matrices which get filled 
+              size(burst_end_p,   2));  % with measured bit error rates 
+BER_r = zeros(size(BER_m));             % for all probability combinations.
+                       
 % Encoding ----------------------------------------------------------------                                       
 disp('> Encode message...');
 
@@ -18,26 +22,34 @@ code = convenc(message, trellis);
 
 % Simulated transmission and decoding -------------------------------------
 disp('> Simulate transmission and decode...');
-i = 0;
-for burst_start_probability = burst_start_probabilities
+
+i = 0; 
+for burst_start_probability = burst_start_p
     i = i + 1; % count iteration for array indexing
-    %disp(['  > Scenario: burst start p = ', num2str(burst_start_probability)]);
     
-    % Simulate transmission
-    received = probability_channel(code, ... 
-                                   0, ... % no random bit errors 
-                                   1, ... % constant burst error
-                                   1 - burst_start_probability, ...
-                                   1 - burst_end_probability);
-    
-    % Decode received code                                                     
-    decoded_message = vitdec(received, trellis, tblen, 'trunc', 'hard');
-    
-    % Calc bit error rate and save in return array
-    [~, pcterrs] = biterr(message, decoded_message); % code
-    BER(i) = pcterrs;
-    [~, pcterrs] = biterr(code, received); % channel
-    BER_ch(i) = pcterrs;
+    j = 0;
+    for burst_end_probability = burst_end_p
+        j = j + 1; % count iteration for array indexing
+        
+        disp(['  > Scenario: burst start p = ', num2str(burst_start_probability), ...
+                          '; burst end p = ',   num2str(burst_end_probability)]);
+
+        % Simulate transmission
+        received = probability_channel(code, ... 
+                                       0, ... % no random bit errors 
+                                       1, ... % constant burst error
+                                       1 - burst_start_probability, ...
+                                       1 - burst_end_probability);
+
+        % Decode received code                                                     
+        decoded_message = vitdec(received, trellis, tblen, 'trunc', 'hard');
+
+        % Calc bit error rates and save in return vectors
+        [~, pcterrs] = biterr(message, decoded_message);% decoded message
+        BER_m(i, j) = pcterrs;
+        [~, pcterrs] = biterr(code, received);          % received codeword
+        BER_r(i, j) = pcterrs;
+    end
 end
 
 end

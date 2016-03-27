@@ -110,22 +110,23 @@ message = randi([0 1], message_len, 1); % generate random message
 burst_start_probabilities = 0:0.01:1; 
 burst_end_probabilities = 0.1:0.1:0.9;
 
+[BER_ch1, BER_1] = burst_benchmark(message, trellis_1, burst_start_probabilities, burst_end_probabilities);
+[BER_ch2, BER_2] = burst_benchmark(message, trellis_2, burst_start_probabilities, burst_end_probabilities);
+[BER_ch3, BER_3] = burst_benchmark(message, trellis_3, burst_start_probabilities, burst_end_probabilities);
+
+
 figure;
 i = 0;
 for burst_end_probability = burst_end_probabilities
     i = i+1;
                                  
-    [BER_ch1, BER_1] = burst_benchmark(message, trellis_1, burst_start_probabilities, burst_end_probability);
-    [BER_ch2, BER_2] = burst_benchmark(message, trellis_2, burst_start_probabilities, burst_end_probability);
-    [BER_ch3, BER_3] = burst_benchmark(message, trellis_3, burst_start_probabilities, burst_end_probability);
-
     subplot(3,3,i)
-    plot(burst_start_probabilities, BER_1, ...
-         burst_start_probabilities, BER_2, ...
-         burst_start_probabilities, BER_3,...
-         burst_start_probabilities, BER_ch1, ...
-         burst_start_probabilities, BER_ch2, ...
-         burst_start_probabilities, BER_ch3);
+    plot(burst_start_probabilities, BER_1(:,i), ...
+         burst_start_probabilities, BER_2(:,i), ...
+         burst_start_probabilities, BER_3(:,i),...
+         burst_start_probabilities, BER_ch1(:,i), ...
+         burst_start_probabilities, BER_ch2(:,i), ...
+         burst_start_probabilities, BER_ch3(:,i));
     str = sprintf('BSC with random burst errors; burst end probability = %.1f', burst_end_probability);
     title(str);
     if i == 1
